@@ -1,0 +1,21 @@
+
+echo "Sourcing all alias scripts."
+
+REL_SCRIPT_PATH="`dirname \"$0\"`"              # relative
+ABS_SCRIPT_PATH="`( cd \"$REL_PATH\" && pwd )`" # absolutized and normalized
+if [ -z "$ABS_SCRIPT_PATH" ] ; then
+  # error; for some reason, the path is not accessible
+  # to the script (e.g. permissions re-evaled after suid)
+  exit 1  # fail
+fi
+
+echo "$0"
+echo "$1"
+echo "$REL_SCRIPT_PATH"
+echo "$ABS_SCRIPT_PATH"
+
+for i in "$ABS_SCRIPT_PATH/aliases/*.sh"
+do
+    [[ -f "$i" ]] || continue
+    . "$i"
+done
